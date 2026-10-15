@@ -71,6 +71,10 @@ const struct linux_logo * __ref fb_find_logo(int depth)
 	}
 	
 	if (depth >= 8) {
+#ifdef CONFIG_LOGO_NULIX_CLUT224
+		/* NULIX logo */
+		logo = &logo_nulix_clut224;
+#endif
 #ifdef CONFIG_LOGO_LINUX_CLUT224
 		/* Generic Linux logo */
 		logo = &logo_linux_clut224;
