@@ -17,6 +17,42 @@
 		rtc1 = &bbnsm_rtc;
 	};
 
+	gpio-keys {
+		compatible = "gpio-keys";
+
+		din-a {
+			label = "DIN A";
+			linux,code = <KEY_A>;
+			gpios = <&tca9535_1 0 GPIO_ACTIVE_HIGH>;
+			wakeup-source;
+			debounce-interval = <10>;
+		};
+
+		din-b {
+			label = "DIN B";
+			linux,code = <KEY_B>;
+			gpios = <&tca9535_1 1 GPIO_ACTIVE_HIGH>;
+			wakeup-source;
+			debounce-interval = <10>;
+		};
+
+		din-c {
+			label = "DIN C";
+			linux,code = <KEY_C>;
+			gpios = <&tca9535_1 2 GPIO_ACTIVE_HIGH>;
+			wakeup-source;
+			debounce-interval = <10>;
+		};
+
+		din-d {
+			label = "DIN D";
+			linux,code = <KEY_D>;
+			gpios = <&tca9535_1 3 GPIO_ACTIVE_HIGH>;
+			wakeup-source;
+			debounce-interval = <10>;
+		};
+	};
+
 	panel {
 		compatible = "waveshare,7.0inch-c-panel", "panel-dpi";
 
@@ -84,14 +120,15 @@
 		#interrupt-cells = <2>;
 		interrupt-parent = <&gpio3>;
 		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
+		wakeup-source;
 		gpio-line-names = "P0_0 IN1_SOM", "P0_1 IN2_SOM", "P0_2 IN3_SOM",
 					"P0_3 IN4_SOM", "P0_4 DIAG_EN_1V8",
 					"P0_5 RS485_TERMTX", "P0_6 RS485_TERMRX",
 					"P0_7 RS485_SLR",
-					"P1_0 ST4_1V8", "P1_1 ST3_1V8",
-					"P1_2 ST2_1V8", "P1_3 ST1_1V8",
-					"P1_4 OUT4_EN_1V8", "P1_5 OUT3_EN_1V8",
-					"P1_6 OUT2_EN_1V8", "P1_7 OUT1_EN_1V8";
+					"P1_0 OUT4_EN_1V8", "P1_1 OUT3_EN_1V8",
+					"P1_2 OUT2_EN_1V8", "P1_3 OUT1_EN_1V8",
+					"P1_4 ST4_1V8", "P1_5 ST3_1V8",
+					"P1_6 ST2_1V8", "P1_7 ST1_1V8";
 	};
 
 	tca9535_2: gpio@21 {
@@ -105,6 +142,7 @@
 		#interrupt-cells = <2>;
 		interrupt-parent = <&gpio3>;
 		interrupts = <26 IRQ_TYPE_LEVEL_LOW>;
+		wakeup-source;
 		gpio-line-names = "P0_0 OE_EN", "P0_1 RS485_HF", "P0_2 RS232_ENABLE",
 					"P0_3 RS232_INVALID", "P0_4 RTC_INT",
 					"P0_5 TEMP_INT", "P0_6 TP49",
@@ -115,13 +153,29 @@
 					"P1_6 TP46", "P1_7 TP45";
 	};
 
+	tmp112: temperature@48 {
+		compatible = "ti,tmp112";
+		reg = <0x48>;
+		//pinctrl-names = "default";
+		//pinctrl-0 = <&pinctrl_tmp112>;
+		//interrupt-parent = <&gpio2>; /* GPIO6 */
+		//interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
+		//interrupt-parent = <&tca9535_2>; /* GPIO exp #2 P04 */
+		//interrupts = <5 IRQ_TYPE_EDGE_FALLING>; /* pca953x only supports edge-triggered irq */
+		//wakeup-source;
+	};
+
 	rv3028: rtc@52 {
 		backup-switchover-dsm;
 		#clock-cells = <0>;
+		//pinctrl-names = "default";
+		//pinctrl-0 = <&pinctrl_rv3028>;
 		compatible = "microcrystal,rv3028";
 		reg = <0x52>;
 		interrupt-parent = <&tca9535_2>; /* GPIO exp #2 P04 */
-		interrupts = <4 IRQ_TYPE_EDGE_FALLING>; /* pca953x only supports edge-triggered irq on its lines */
+		interrupts = <4 IRQ_TYPE_EDGE_FALLING>; /* pca953x only supports edge-triggered irq */
+		//interrupt-parent = <&gpio4>;
+		//interrupts = <29 IRQ_TYPE_LEVEL_LOW>; /* GPIO3 */
 		wakeup-source;
 	};
 };
@@ -221,7 +275,7 @@
 
 	pinctrl_hog: hoggrp {
 		fsl,pins = <
-			MX93_PAD_GPIO_IO06__GPIO2_IO06				0x31e
+			MX93_PAD_CCM_CLKO3__GPIO4_IO28		0x31e /* VDD5_EN */
 		>;
 	};
 
@@ -236,4 +290,10 @@
 			MX93_PAD_CCM_CLKO1__GPIO3_IO26				0x31e
 		>;
 	};
+
+	//pinctrl_rv3028: rv3028grp {
+	//	fsl,pins = <
+	//		MX93_PAD_CCM_CLKO4__GPIO4_IO29				0x31e
+	//	>;
+	//};
 };
