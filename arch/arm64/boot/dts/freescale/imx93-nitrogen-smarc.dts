@@ -17,11 +17,91 @@
 		rtc1 = &bbnsm_rtc;
 	};
 
+	txs_oe_en: txs-oe-en {
+		compatible = "regulator-fixed";
+		regulator-name = "TXS_OE_EN";
+		gpio = <&tca9535_2 0 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		regulator-boot-on;
+	};
+
+	vdd5_en: vdd5-en {
+		compatible = "regulator-fixed";
+		regulator-name = "VDD5_EN";
+		gpio = <&tca9535_2 9 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		regulator-boot-on;
+	};
+
+	vdd33_en: vdd33-en {
+		compatible = "regulator-fixed";
+		regulator-name = "VDD33_EN";
+		gpio = <&tca9535_2 10 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		regulator-boot-on;
+	};
+
+	vdd_lte_en: vdd-lte-en {
+		compatible = "regulator-fixed";
+		regulator-name = "VDD_LTE_EN";
+		gpio = <&tca9535_2 11 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		regulator-boot-on;
+	};
+
+	txs-oe-en-ctl {
+		compatible = "regulator-output";
+		vout-supply = <&txs_oe_en>;
+	};
+
+	vdd5-en-ctl {
+		compatible = "regulator-output";
+		vout-supply = <&vdd5_en>;
+	};
+
+	vdd33-en-ctl {
+		compatible = "regulator-output";
+		vout-supply = <&vdd33_en>;
+	};
+
+	vdd-lte-en-ctl {
+		compatible = "regulator-output";
+		vout-supply = <&vdd_lte_en>;
+	};
+
+	gpio-leds {
+		compatible = "gpio-leds";
+
+		dout_a: dout-a {
+			label = "dout-a";
+			gpios = <&tca9535_1 11 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
+
+		dout_b: dout-b {
+			label = "dout-b";
+			gpios = <&tca9535_1 10 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
+
+		dout_c: dout-c {
+			label = "dout-c";
+			gpios = <&tca9535_1 9 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
+
+		dout_d: dout-d {
+			label = "dout-d";
+			gpios = <&tca9535_1 8 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
+	};
+
 	gpio-keys {
 		compatible = "gpio-keys";
 
 		din-a {
-			label = "DIN A";
+			label = "din-a";
 			linux,code = <KEY_A>;
 			gpios = <&tca9535_1 0 GPIO_ACTIVE_HIGH>;
 			wakeup-source;
@@ -29,7 +109,7 @@
 		};
 
 		din-b {
-			label = "DIN B";
+			label = "din-b";
 			linux,code = <KEY_B>;
 			gpios = <&tca9535_1 1 GPIO_ACTIVE_HIGH>;
 			wakeup-source;
@@ -37,7 +117,7 @@
 		};
 
 		din-c {
-			label = "DIN C";
+			label = "din-c";
 			linux,code = <KEY_C>;
 			gpios = <&tca9535_1 2 GPIO_ACTIVE_HIGH>;
 			wakeup-source;
@@ -45,7 +125,7 @@
 		};
 
 		din-d {
-			label = "DIN D";
+			label = "din-d";
 			linux,code = <KEY_D>;
 			gpios = <&tca9535_1 3 GPIO_ACTIVE_HIGH>;
 			wakeup-source;
@@ -120,7 +200,6 @@
 		#interrupt-cells = <2>;
 		interrupt-parent = <&gpio3>;
 		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
-		wakeup-source;
 		gpio-line-names = "P0_0 IN1_SOM", "P0_1 IN2_SOM", "P0_2 IN3_SOM",
 					"P0_3 IN4_SOM", "P0_4 DIAG_EN_1V8",
 					"P0_5 RS485_TERMTX", "P0_6 RS485_TERMRX",
@@ -142,7 +221,6 @@
 		#interrupt-cells = <2>;
 		interrupt-parent = <&gpio3>;
 		interrupts = <26 IRQ_TYPE_LEVEL_LOW>;
-		wakeup-source;
 		gpio-line-names = "P0_0 OE_EN", "P0_1 RS485_HF", "P0_2 RS232_ENABLE",
 					"P0_3 RS232_INVALID", "P0_4 RTC_INT",
 					"P0_5 TEMP_INT", "P0_6 TP49",
