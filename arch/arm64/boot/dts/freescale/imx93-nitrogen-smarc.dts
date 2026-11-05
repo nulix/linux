@@ -9,7 +9,7 @@
 #include "imx93-nitrogen-smarc.dtsi"
 
 / {
-	model = "Nitrogen93 SMARC on CORE SE-100";
+	model = "Nitrogen93 SMARC on CORE SE-100 with MIPI-DSI0";
 	compatible = "fsl,imx93-nitrogen-smarc", "fsl,imx93";
 
 	aliases {
@@ -133,32 +133,6 @@
 		};
 	};
 
-	panel {
-		compatible = "waveshare,7.0inch-c-panel", "panel-dpi";
-
-		port {
-			panel_in: endpoint {
-				remote-endpoint = <&dsi_out>;
-			};
-		};
-
-		panel-timing {
-			clock-frequency = <51200000>;
-			hactive = <1024>;
-			vactive = <600>;
-			hfront-porch = <160>;
-			hback-porch = <140>;
-			hsync-len = <20>;
-			vback-porch = <12>;
-			vfront-porch = <20>;
-			vsync-len = <3>;
-
-			hsync-active = <0>;
-			vsync-active = <0>;
-			de-active = <1>;
-			pixelclk-active = <1>;
-		};
-	};
 };
 
 &dphy {
@@ -166,7 +140,21 @@
 };
 
 &dsi {
+	#address-cells = <1>;
+	#size-cells = <0>;
 	status = "okay";
+
+	panel@0 {
+		compatible = "ebyte,eca20-mha1-ev101wxm-n80";
+		//compatible = "ebyte,eca20-mha1-1080p30"; /* Generic 1080p30 display */
+		reg = <0>;
+
+		port {
+			panel_in: endpoint {
+				remote-endpoint = <&dsi_out>;
+			};
+		};
+	};
 
 	ports {
 		port@1 {
@@ -259,7 +247,8 @@
 };
 
 &lcdif {
-	assigned-clock-rates = <484000000>, <121000000>, <400000000>, <133333333>;
+	assigned-clock-rates = <498000000>, <83000000>, <400000000>, <133333333>;
+	//assigned-clock-rates = <594000000>, <74250000>,<400000000>, <133333333>; /* Generic 1080p30 display */
 	status = "okay";
 };
 

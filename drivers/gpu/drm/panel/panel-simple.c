@@ -4768,6 +4768,58 @@ static const struct panel_desc_dsi boe_tv080wum_nl0 = {
 	.lanes = 4,
 };
 
+static const struct drm_display_mode ebyte_eca20_mha1_1080p30_mode = {
+	.clock = 74250,
+	.hdisplay = 1920,
+	.hsync_start = 1920 + 88,
+	.hsync_end = 1920 + 88 + 44,
+	.htotal = 1920 + 88 + 44 + 148,
+	.vdisplay = 1080,
+	.vsync_start = 1080 + 4,
+	.vsync_end = 1080 + 4 + 5,
+	.vtotal = 1080 + 4 + 5 + 36,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
+};
+
+static const struct panel_desc_dsi ebyte_eca20_mha1_1080p30 = {
+	.desc = {
+		.modes = &ebyte_eca20_mha1_1080p30_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
+		 MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
+static const struct drm_display_mode ebyte_eca20_mha1_ev101wxm_n80_mode = {
+	.clock = 83500,
+	.hdisplay = 1280,
+	.hsync_start = 1280 + 88,
+	.hsync_end = 1280 + 88 + 44,
+	.htotal = 1280 + 88 + 44 + 268,
+	.vdisplay = 800,
+	.vsync_start = 800 + 4,
+	.vsync_end = 800 + 4 + 5,
+	.vtotal = 800 + 4 + 5 + 22,
+	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
+};
+
+static const struct panel_desc_dsi ebyte_eca20_mha1_ev101wxm_n80 = {
+	.desc = {
+		.modes = &ebyte_eca20_mha1_ev101wxm_n80_mode,
+		.num_modes = 1,
+		.bpc = 8,
+		.connector_type = DRM_MODE_CONNECTOR_DSI,
+	},
+	.flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
+		 MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_NO_EOT_PACKET,
+	.format = MIPI_DSI_FMT_RGB888,
+	.lanes = 4,
+};
+
 static const struct drm_display_mode lg_ld070wx3_sl01_mode = {
 	.clock = 71000,
 	.hdisplay = 800,
@@ -4919,6 +4971,12 @@ static const struct of_device_id dsi_of_match[] = {
 	}, {
 		.compatible = "boe,tv080wum-nl0",
 		.data = &boe_tv080wum_nl0
+	}, {
+		.compatible = "ebyte,eca20-mha1-1080p30",
+		.data = &ebyte_eca20_mha1_1080p30
+	}, {
+		.compatible = "ebyte,eca20-mha1-ev101wxm-n80",
+		.data = &ebyte_eca20_mha1_ev101wxm_n80
 	}, {
 		.compatible = "lg,ld070wx3-sl01",
 		.data = &lg_ld070wx3_sl01
